@@ -1,0 +1,15 @@
+scene opens at an art sale and a van gogh goes for millions. It's provenance through paper documentation over the centuries is guaranteed.
+
+scene shows a computer silicon chip and drills down to show it's design components, known as IP Blocks.
+
+scene explains that there are thousands of IP Blocks and no provenance for each like there is with a painting
+
+scene where we introduce Lockular, a company that has created an NFS compliant filesystem that irrefutably tracks design creation
+
+scene where we explain that file data and file metadata is broken into shares controlled by a protocol running on the Polkadot parachain. the protocol is also responsible for reassembling the data back to plain text.
+
+scene that explains the protocol is expressed as a series of state transitions on a bespoke parachain and thus providing an irrefutable audit of design activity. in fact absolutely provenance
+
+scene that explains that design tools like this are very necessary at the heart of critical infrastucture design
+
+scene Lockular can show a video where the ARM chief architect explains the neccessity

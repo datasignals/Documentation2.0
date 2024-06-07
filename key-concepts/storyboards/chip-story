@@ -1,0 +1,25 @@
+In a highly secure CIA facility in Hawaii, a clandestine quintet of Chinese operatives—Chris, Drew, Kim, Phil, and Liz—are embedded within asignificant chip design team and its supporting infrastructure. Their primary objective? Leaking sensitive chip blueprints and introducing manipulated part designs housing backdoors (inside of IP Blocks) to enable future injection of malicious behaviour into vital infrastructure leveraging this chip technology.
+
+Their aim is to potentially take control of airborne fighter jets or covertly intercept critical communications. Officially, these five have no ties; they attended separate undergraduate and postgraduate courses across various US institutions and now hold green cards or have citizen status. All possess security clearances and operate in different capacities within diverse organisational units. Their collective access spans role boundaries, granting them extraordinary privileges when working in unison—a sort of super user power.
+
+Their seamless integration into the chip design team provides access to crucial insider information. However, their complex mission involves navigating the intricate chip design verification process, masking their inserted backdoor IPBlocks as coding accidents where discovered. Moreover, they plan to manipulate the internal code tracking system and the restricted network, specifically the git repository, to amend and obscure their tracks.
+
+Drew, the team's technical genius, holds the key to success by manipulating the central Git repository using advanced commands like rebase and filter-branch to conceal the insertion of backdoor IPBlocks, an even divert blame. Their meticulous planning and backing from the Chinese government facilitate their manoeuvres. They are just one cell among several placed strategically across Western infrastructure facilities.
+
+However, Drew stumbles upon an unexpected hurdle. A new data integrity approach threatens to derail not only their plans but also similar teams in other organisations. The discovery of Lockular, a new platform, poses a potential threat as it tracks filesystems beneath git on designers' machines. Drew's manipulations are in danger of being exposed in an impending audit report.
+
+Recognising the looming danger, the team pivots its strategy. They must infiltrate and manipulate Lockular's filesystem audit database to erase any evidence before the impending audit exposes Drew's actions.
+
+Chris takes command, emphasising the urgency of comprehending the Lockular software and its team members. Kim strategises the covert infiltration of Lockular, Drew delves into its operations seeking vulnerabilities to access and modify the audit database, while Phil and Liz brainstorm manipulation tactics.
+
+After evaluating various approaches, Phil and Liz conclude on parallel activities: establishing trust within the Lockular team to exploit vulnerabilities, gaining a comprehensive understanding of Lockular's technology to manipulate the impending audit.
+
+As tensions escalate, the team faces a daunting challenge: infiltrate and alter Lockular's audit database covertly to prevent exposure. Time ticks away, and failure could be catastrophic.
+
+Drew's investigation reveals that the CIA's IDEs are supported by Lockular posix drives, specifically highly virtual drives using FUSE as their primary interface. However, comprehending the filesystem's storage proves elusive due to its virtual nature. Their collaboration with China involves scrutinising Lockular's public documentation and patents, uncovering that the filesystem data is encrypted and distributed across a cluster of storage nodes.
+
+They realise the complexity of subverting the audit but focus on manipulating the existing audit records. The audit data resides within a MongoDB cluster within the CIA, accessible to Phil in an administrative capacity. Although the cluster is regularly backed up, manipulated audits would cycle through the backups without posing a significant threat since backups are seldom used for recovery.
+
+Relieved, the team prepares to delete the entries, but Phil discovers that the audit records are grouped by a digest. Uncertain of its importance and potential implications, he hesitates. Further investigation unveils that the audit forms a blockchain, and the digests organise real audit records into blocks.
+
+Now faced with a deeper problem, they must rewrite the blockchain or alter the audit records while preserving the same checksums. They uncover that the blockchain is public, comprising several Polkadot Parachains providing differing services to the Lockular platform, each service required for a fully functioning platform and each chain must be re written from a point in time and with each second delay the task increases in compute complexity.

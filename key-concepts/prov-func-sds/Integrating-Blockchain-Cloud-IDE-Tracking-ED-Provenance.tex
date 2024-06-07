@@ -1,0 +1,306 @@
+\documentclass{tufte-handout}
+
+%\geometry{showframe}% for debugging purposes -- displays the margins
+
+\usepackage{amsmath}
+
+% Set up the images/graphics package
+\usepackage{graphicx}
+\setkeys{Gin}{width=\linewidth,totalheight=\textheight,keepaspectratio}
+\graphicspath{{graphics/}}
+
+\title{Integrating Blockchain with Cloud-Based IDE for Tracking Electronic Design Provenance\thanks{Facilitated by the Lockular filesystem and cloud based IDE from Theia and Microsoft} \\
+\large A cloud based design sandbox where the creation process is tracked by file block. Design outputs are stored securely and downstream usage tracked using an NFT Marketplace.}
+\author[Gary Mawdsley]{Gary Mawdsley CTO/CEO Lockular Limited}
+\date{March 2023}  % if the \date{} command is left out, the current date will be used
+
+% The following package makes prettier tables.  We're all about the communication!
+\usepackage{booktabs}
+
+% The units package provides nice, non-stacked fractions and better spacing
+% for units.
+\usepackage{units}
+
+
+% The fancyvrb package lets us customize the formatting of verbatim
+% environments.  We use a slightly smaller font.
+\usepackage{fancyvrb}
+\fvset{fontsize=\normalsize}
+
+% Small sections of multiple columns
+\usepackage{multicol}
+% Provides paragraphs of dummy text
+\usepackage{lipsum}
+\usepackage{tabularx}
+\usepackage{booktabs}
+
+% These commands are used to pretty-print LaTeX commands
+\newcommand{\doccmd}[1]{\texttt{\textbackslash#1}}% command name -- adds backslash automatically
+\newcommand{\docopt}[1]{\ensuremath{\langle}\textrm{\textit{#1}}\ensuremath{\rangle}}% optional command argument
+\newcommand{\docarg}[1]{\textrm{\textit{#1}}}% (required) command argument
+\newenvironment{docspec}{\begin{quote}\noindent}{\end{quote}}% command specification environment
+\newcommand{\docenv}[1]{\textsf{#1}}% environment name
+\newcommand{\docpkg}[1]{\texttt{#1}}% package name
+\newcommand{\doccls}[1]{\texttt{#1}}% document class name
+\newcommand{\docclsopt}[1]{\texttt{#1}}% document class option name
+
+\usepackage{titlesec} % Make sure to include this package
+
+% Custom appendix command
+\newcommand{\customappendix}{
+    \clearpage % Ensure a page break
+    \appendix % Mark the beginning of appendices
+    \pagestyle{empty} % Optional: Removes header/footer if desired
+    \titleformat{\section}[display]{\normalfont\Large\bfseries}{\appendixname~\thesection}{0pt}{\Large}
+    \titlespacing*{\section}{0pt}{50pt}{40pt}
+    \section*{Appendices} % This adds the title "Appendices"
+    \addcontentsline{toc}{section}{Appendices} % Optional: Adds "Appendices" to the table of contents
+}
+
+\begin{document}
+
+\maketitle% this prints the handout title, author, and date
+
+\begin{abstract}
+\noindent 
+This paper presents an innovative approach to ensuring the integrity and traceability of electronic design processes through the integration of blockchain technology
+with a cloud-based Integrated Development Environment (IDE). Leveraging Lockular's advanced provenance tracking filesystem alongside its Workflow Actor Management System (WAM),
+our methodology establishes a robust framework for the immutable recording of the entire design lifecycle. By embedding the design process within a secure, sandboxed
+cloud environment, we facilitate the granular tracking of file modifications at the block level within the IDE, utilising a specialised Network File System (NFS).
+These modifications are then recorded as state transitions on a bespoke blockchain, built upon Polkadot Substrate, ensuring an unalterable history of design
+evolution. Furthermore, the deployment of an NFT marketplace offers a novel mechanism for the secure and transparent sharing of design outputs, such as SDKs and
+detailed material specifications, across collaborative teams. This system not only enhances the security and provenance of electronic
+designs but also opens new avenues for their utilisation and monetisation within the defence, space, and broader industries.
+
+\end{abstract}
+
+%\printclassoptions
+\marginnote{See the paper on coupling real and virtual worlds.}
+
+\section{Introduction}
+% Introduce the problem, why it's important, and an overview of your solution.
+In the context of tracking the provenance of electronic design outputs and ensuring the integrity and authenticity of design processes, several challenges arise:
+\begin{itemize}
+    \item Complexity of Design Processes: Electronic design processes often involve multiple stages, tools, and contributors, making it difficult
+    to track changes and origins accurately.
+    \item Dynamic Nature of Designs: Designs frequently undergo revisions and updates. Capturing every change in a way that is both secure and verifiable
+    presents a significant challenge.
+    \item Integration with Existing Tools: Many design teams use a variety of software tools. Ensuring that provenance tracking seamlessly integrates with
+    these tools without disrupting workflows is crucial.
+    \item Scalability: The system must handle a large volume of design files and changes without significant performance degradation, ensuring scalability.
+    \item Security and Privacy: Protecting the confidentiality of designs while tracking their provenance requires robust security measures to prevent unauthorised
+    access and tampering.
+    \item Standardisation: Lack of standardisation across tools and formats can hinder the effective tracking of provenance. Establishing common protocols or
+    formats is necessary for interoperability.
+    \item Legal and Regulatory Compliance: Ensuring that the provenance tracking system complies with intellectual property laws and industry regulations
+    adds another layer of complexity.
+    \item User Adoption: Convincing designers and engineers to adopt new tools or modify their workflows to include provenance tracking can be challenging.
+\end{itemize}
+
+Ensuring integrity and authenticity in design processes is crucial for several reasons:
+\begin{itemize}
+    \item Protecting Intellectual Property: It helps in safeguarding the intellectual property rights of the creators by providing a verifiable record of
+    creation and modification. There may be other factors like the US export control standards: ITAR.
+    \marginnote{See the paper on ITAR and CMMC.}
+    \item Quality Assurance: Tracking provenance ensures that all changes are documented, facilitating quality control and verification processes.
+    \item Collaboration and Trust: In collaborative environments, especially where multiple organisations are involved, provenance tracking builds trust
+    among parties by ensuring transparency.
+    \item Auditability: A clear and immutable record of the design process aids in auditability, which is particularly important in regulated industries
+    such as defense and aerospace.
+    \item Error Detection and Correction: By maintaining a detailed history of design changes, it becomes easier to trace the source of errors and make corrections.
+\end{itemize}
+
+Addressing these challenges and emphasizing the importance of integrity and authenticity in design processes is essential for advancing the field of electronic
+design and fostering innovation.
+
+Given the challenges in tracking the provenance of electronic design outputs and ensuring the integrity and authenticity of design processes, our solution
+leverages a cloud-based sandboxed Integrated Development Environment (IDE) integrated with blockchain technology. This innovative approach provides a
+comprehensive and scalable framework for the secure, transparent, and immutable tracking of electronic design processes from inception to final output. Here's a
+high-level overview of the solution:
+\begin{itemize}
+    \item Cloud-Based Sandboxed IDE: The core of our solution is a cloud-based IDE that operates within a secure, sandboxed environment. This setup allows
+    designers and engineers to create, modify, and collaborate on electronic designs in real-time, from anywhere, without the need for local software
+    installations. The sandboxed nature ensures that design processes are isolated and protected from external threats, maintaining the integrity
+    of the design data.
+    \item Specialised NFS Filesystem: Within the IDE, we employ a specialised Network File System (NFS) that is designed to track every creation, modification,
+    and deletion of design files at the block level. This granular tracking mechanism is crucial for capturing the detailed provenance of each design element,
+    including who made changes, when, and what those changes were.
+    \marginnote{See the paper on A Provenance Tracking Filesystem.}
+    \item Blockchain Integration: The tracked modifications within the NFS are recorded as state transitions on a bespoke blockchain, built upon the Polkadot
+    Substrate framework. This integration ensures that every change to the design files is immutably logged, creating an unalterable history of the design process.
+    The use of blockchain technology not only enhances security but also provides a transparent and verifiable record of the design provenance.
+    \item NFT Marketplace for Design Outputs: Upon completion of the design process, the outputs (e.g., SDKs, detailed material specifications) are securely stored
+    and can be shared or monetised through an NFT marketplace. This marketplace facilitates the transparent and secure sharing of design outputs across
+    collaborative teams or with external parties. It also opens new avenues for monetizing intellectual property in the defence, space, and broader
+    industries by providing a mechanism for licensing or selling design outputs as verified digital assets. Leveraging the NFT Marketplace architecture for design
+    outputs results in the the benefits of those schemes and particularly in reference to provenance tracking of those design outputs. 
+\end{itemize}
+This comprehensive solution addresses the key challenges in tracking the provenance of electronic design outputs and ensuring the integrity and authenticity of
+design processes. By integrating a cloud-based sandboxed IDE with blockchain technology and a specialised NFS filesystem, we provide a robust framework
+for the secure, transparent, and immutable recording of the electronic design lifecycle.   
+
+\section{Background}
+\subsection{Electronic Design and Provenance}
+% Discuss the importance of provenance in electronic design.
+In the realm of electronic design, provenance refers to the documentation of the history and lifecycle of a design, including its origins, the changes it has
+undergone, and who has made these changes. This concept is crucial for several reasons:
+\begin{itemize}
+\item Intellectual Property Protection: Provenance helps in establishing and protecting the intellectual property rights of designers and organisations. By
+providing a clear record of design creation and modifications, it supports the attribution of work and can be used to resolve disputes over ownership.
+\item Quality and Reliability Assurance: Tracking the provenance of electronic designs ensures that each component's origin and modification history are known,
+which is vital for assessing the quality and reliability of the final product. This is particularly important in industries where safety and reliability are
+paramount, such as aerospace and medical devices.
+\item Compliance and Auditability: Many industries are subject to regulations that require the tracking of design changes for compliance purposes. Provenance
+provides a verifiable trail that can be audited to ensure that designs meet regulatory standards and that all modifications are properly documented and authorised.
+\item Collaboration and Reuse: In collaborative design environments, provenance allows team members to understand the history and rationale behind design decisions.
+This facilitates more effective collaboration and enables the reuse of design components by providing a clear understanding of their capabilities and limitations.
+\item Security: Provenance tracking can enhance the security of electronic designs by providing a mechanism to detect unauthorised or malicious modifications.
+This is increasingly important in the context of cybersecurity threats to the supply chain.
+\end{itemize}
+In summary, the importance of provenance in electronic design cannot be overstated. It underpins intellectual property protection, quality assurance, regulatory compliance, effective collaboration, and security, making it an essential component of modern electronic design practices.
+
+\subsection{Blockchain Technology}
+Blockchain technology is a decentralised digital ledger that records transactions across many computers in such a manner that the registered transactions cannot
+be altered retroactively. This technology underpins cryptocurrencies like Bitcoin, but its potential applications extend far beyond. Its relevance to our project
+lies in its ability to ensure the integrity, transparency, and immutability of data—a critical requirement for tracking the provenance of electronic designs.
+
+In the context of electronic design provenance, blockchain is used to create a tamper-proof record of the entire design process. Each design modification,
+from initial creation through various revisions, can be recorded as a transaction on the blockchain. This provides a verifiable and immutable history of the design,
+ensuring that any changes are transparent and traceable.
+
+The relevance of blockchain to our project is twofold:
+\begin{itemize}
+    \item Integrity and Security: By leveraging blockchain, we can ensure that the data related to electronic design processes is secure and unalterable after the fact.
+This is crucial for protecting intellectual property and ensuring that the design data remains untampered.
+    \item Transparency and Traceability: Blockchain technology facilitates a level of transparency that is not possible with traditional databases. Every transaction
+on the blockchain is visible to all participants and cannot be changed once recorded. This feature is invaluable for tracking the provenance of electronic designs,
+as it allows for a clear and auditable trail of all changes made throughout the design lifecycle.
+\end{itemize}
+Overall, the integration of blockchain technology into our cloud-based IDE for tracking electronic design provenance represents a significant advancement in
+ensuring the integrity, security, and transparency of the design process.
+
+\subsection{Polkadot Substrate}
+% Introduce Polkadot Substrate and its significance in your project.
+Polkadot Substrate plays a pivotal role in our project by providing a robust and flexible framework for blockchain development. Its significance lies in several
+key areas:
+\begin{itemize}
+    \item Interoperability: Substrate's inherent compatibility with the Polkadot network facilitates interoperability among different blockchains. This is
+    crucial for our project as it allows the seamless integration of our bespoke blockchain, designed for tracking electronic design provenance, with other
+    blockchains (e.g. sharing design outputs). This interoperability enables the exchange of information and assets across various blockchain networks, enhancing
+    collaboration and data sharing in the electronic design community.
+    \item Customisability: Substrate offers an unprecedented level of customisability, enabling us to tailor our blockchain to the specific needs of electronic
+    design companies. We can define custom data types, consensus mechanisms, and governance models that are optimised for the integrity, security, and
+    efficiency of design data tracking. This flexibility ensures that our blockchain is well-suited to handle the unique challenges of electronic design processes.
+    \item Scalability: The modular architecture of Substrate, combined with Polkadot's shared security model, provides a scalable solution for our project. As the
+    volume of design data and the number of transactions grow, our blockchain can scale efficiently without compromising performance or security. This scalability
+    is essential for supporting the dynamic and complex nature of electronic design activities across industries.
+    \item Security: Leveraging Substrate's framework means our blockchain benefits from the collective security features of the Polkadot network. This includes
+    shared security mechanisms that protect against attacks and ensure the integrity of the design data recorded on the blockchain. Security is paramount in our
+    project, as it underpins the trustworthiness of the provenance data and the protection of intellectual property.
+    \item Rapid Development and Deployment: Substrate's comprehensive tooling and pre-built components accelerate the development and deployment of our blockchain.
+    This enables us to quickly bring our solution to market, providing the electronic design community with an innovative tool for provenance tracking without
+    lengthy development timelines.
+\end{itemize}
+In summary, Polkadot Substrate is integral to our project as it provides the technological foundation for a secure, scalable, and interoperable blockchain
+tailored to the needs of electronic design provenance tracking. Its capabilities align perfectly with our objectives, making it an ideal choice for our
+blockchain development efforts.
+
+\section{System Architecture}
+\subsection{Cloud-Based IDE}
+% Describe the cloud-based IDE setup, its features, and why it was chosen.
+The core of our solution is a cloud-based IDE that operates within a secure, sandboxed environment. This setup not only allows designers and engineers to create,
+modify, and collaborate on electronic designs in real-time, from anywhere, but also ensures the integrity of the design data by isolating design processes from
+external threats. 
+
+A key feature of our IDE is its flexibility in integrating various design tool-chains. Through a configurable setup, our system allows for the loading of
+specific tool-chains tailored to the needs of different electronic design domains. This capability ensures that our approach is not limited to a single
+field but is adaptable enough to support a wide range of electronic design activities, from silicon chip design to the detailed specification of materials
+used in the defence and space industries. This flexibility is crucial for accommodating the diverse and evolving needs of electronic design professionals,
+making our solution a versatile tool for innovation across sectors.
+
+\subsection{NFS Filesystem and Blockchain Integration}
+The integration of Lockular's Network File System (NFS) with blockchain technology forms the backbone of our cloud-based Integrated Development Environment (IDE) for
+tracking electronic design provenance. In our architecture, the cloud-based IDE operates within a Kubernetes environment, where each instance of the IDE is
+served as a web application running inside a Kubernetes pod. This setup ensures that users can access their design environment through a web browser, providing
+flexibility and ease of use.
+
+Each pod is configured to mount a user-specific account on the NFS, which acts as the filesystem for the pod and, by extension, the user's design environment.
+This NFS mount is critical as it stores all the design files and related data, making it accessible to the user's instance of the IDE. Additionally, a
+tool-chain drive is attached to the pod, granting the IDE access to a suite of design tools necessary for the creation and modification of electronic designs.
+This arrangement not only simplifies the management of design tools but also ensures that all modifications made within the IDE are directly reflected in the
+user's NFS-stored files.
+
+The tracking mechanism is where blockchain integration comes into play. Every creation, modification, or deletion of files within the NFS is captured as a
+series of operations by the IDE. These operations are then translated into state transitions on the blockchain. By leveraging the immutable nature of
+blockchain technology, each state transition is recorded in a way that is tamper-proof and verifiable, creating a permanent history of the design process.
+This integration ensures that every action taken within the cloud-based IDE is securely logged, providing a transparent and unalterable record of the electronic
+design provenance.
+
+This innovative approach to integrating NFS with blockchain technology not only enhances the security and integrity of the design process but also
+facilitates a new level of transparency and accountability in electronic design. It represents a significant step forward in our ability to track and
+verify the provenance of electronic designs, ensuring that intellectual property is protected and that the design process is fully auditable.
+
+\section{Blockchain State Transition for NFS Operations}
+In the Lockular NFS, NFS operations, which include both file content and metadata manipulations, are securely transmitted from the client's mount
+point to the NFS Server. This process involves bespoke logic tailored to handle the storage of file content and metadata within the NFS API framework.
+
+The Lockular NFS filesystem employs specific handlers that transform this data before storage. This transformation involves disassembling the data into
+shares using the Shamir Secret Sharing scheme, coupled with multiple keys facilitated by Substrate's multi-signature capabilities. This disassembly
+process is modeled as state transitions on a bespoke parachain, establishing an immutable audit trail of filesystem operations.
+
+Reassembly of the data for retrieval mirrors this process in reverse, again leveraging state transitions on the bespoke parachain to
+ensure security and integrity. This approach not only secures the data but also provides a transparent and verifiable record of all operations conducted
+within the filesystem that underpins the design process.
+
+\subsection{Design and Implementation}
+The system architecture is designed to seamlessly integrate a cloud-based Integrated Development Environment (IDE) with a Network File System (NFS) and
+blockchain technology. At its core, the IDE provides a sandboxed environment for electronic design, which is enhanced by the NFS for file storage and management.
+Blockchain technology is employed to log every file operation as an immutable record, ensuring the integrity and traceability of design processes.
+
+The cloud-based IDE is built on VSCode Server, chosen for its extensibility and compatibility with Visual Studio Code extensions. It operates within a secure,
+sandboxed environment, ensuring that design activities are isolated from external threats. This setup allows for real-time collaboration and access from
+anywhere, providing a flexible and efficient design experience.
+
+The Lockular NFS is intricately integrated with the IDE, serving as the primary storage for design files. It is configured to track changes at the block level, enabling
+detailed provenance tracking. The filesystem's structure is optimised for electronic design activities, supporting a wide range of file types and sizes without
+compromising performance.
+
+Blockchain integration is achieved using the Polkadot Substrate framework, chosen for its flexibility and interoperability. Each file operation within the
+NFS triggers a state transition on the blockchain, logged as an immutable record. This ensures a tamper-proof audit trail of the design process, enhancing
+security and transparency.
+
+Security is paramount in our system, with multiple layers of protection implemented. Data encryption is employed both in transit and at rest, safeguarding
+sensitive design information. Access controls ensure that only authorised users can make changes, while the blockchain's immutable ledger provides an
+additional layer of security, preventing tampering and unauthorised access.
+
+\subsection{Challenges and Solutions}
+One of the main challenges was ensuring seamless integration between the cloud-based IDE, NFS, and blockchain, which was addressed through extensive
+testing and iterative development. Performance optimisation was another focus area, particularly in handling large design files and maintaining
+system responsiveness. Solutions included optimizing the NFS structure and employing efficient blockchain transactions to minimise latency.
+
+\section{Conclusion}
+This paper introduces an innovative framework for enhancing the integrity and traceability of electronic design processes through the integration of
+blockchain technology with a cloud-based Integrated Development Environment (IDE). By leveraging Lockular's advanced provenance tracking filesystem
+alongside its Workflow Actor Management System (WAM), the proposed methodology establishes a robust system for the immutable recording of the entire design
+lifecycle within a secure, sandboxed cloud environment.
+
+Key aspects of the solution include:
+\begin{itemize}
+    \item Cloud-Based Sandboxed IDE: Facilitates real-time creation, modification, and collaboration on electronic designs from anywhere, ensuring the integrity
+    of design data through isolation from external threats.
+    \item Lockular's Specialised NFS Filesystem: Tracks every file modification at the block level within the IDE, capturing detailed provenance of each design element.
+    \item Blockchain Integration: Utilises a bespoke blockchain built on the Polkadot Substrate to record state transitions of design modifications,
+    ensuring an unalterable history of design evolution.
+    \item FT Marketplace for Design Outputs: Offers a secure and transparent mechanism for sharing and monetising design outputs, enhancing the security,
+    provenance, and utilisation of electronic designs across industries.
+\end{itemize}
+
+The significance of this work lies in its potential to revolutionise the way electronic designs are created, shared, and monetised. By providing a secure
+and transparent framework for tracking the provenance of electronic designs, the system not only protects intellectual property but also fosters trust and
+collaboration among designers, engineers, and stakeholders across various industries. This approach opens new avenues for innovation and monetisation in
+the fields of defence, space, and beyond, marking a significant advancement in the realm of electronic design and development.
+
+\bibliographystyle{plain}
+\bibliography{thebib} % This assumes you have a file named 'your_bib_file.bib'
+
+\end{document}

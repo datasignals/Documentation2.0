@@ -1,0 +1,230 @@
+\documentclass{tufte-handout}
+
+%\geometry{showframe}% for debugging purposes -- displays the margins
+
+\usepackage{amsmath}
+
+% Set up the images/graphics package
+\usepackage{graphicx}
+\setkeys{Gin}{width=\linewidth,totalheight=\textheight,keepaspectratio}
+\graphicspath{{graphics/}}
+
+\title{Managing Workflow Actors: Contract Management\thanks{Facilitated by Polkadot Parachains and NFT Marketplaces} \\
+\large Management of Actors participating in a supply chain workflow.}
+\author[Gary Mawdsley]{Gary Mawdsley CTO/CEO Lockular Limited}
+\date{February 2024\thanks{Updated April 2024 to consider Medicines supply chain context}}    % if the \date{} command is left out, the current date will be used
+
+% The following package makes prettier tables.  We're all about the communication!
+\usepackage{booktabs}
+
+% The units package provides nice, non-stacked fractions and better spacing
+% for units.
+\usepackage{units}
+
+
+% The fancyvrb package lets us customize the formatting of verbatim
+% environments.  We use a slightly smaller font.
+\usepackage{fancyvrb}
+\fvset{fontsize=\normalsize}
+
+% Small sections of multiple columns
+\usepackage{multicol}
+
+% Provides paragraphs of dummy text
+\usepackage{lipsum}
+\usepackage{tabularx}
+\usepackage{booktabs}
+
+% These commands are used to pretty-print LaTeX commands
+\newcommand{\doccmd}[1]{\texttt{\textbackslash#1}}% command name -- adds backslash automatically
+\newcommand{\docopt}[1]{\ensuremath{\langle}\textrm{\textit{#1}}\ensuremath{\rangle}}% optional command argument
+\newcommand{\docarg}[1]{\textrm{\textit{#1}}}% (required) command argument
+\newenvironment{docspec}{\begin{quote}\noindent}{\end{quote}}% command specification environment
+\newcommand{\docenv}[1]{\textsf{#1}}% environment name
+\newcommand{\docpkg}[1]{\texttt{#1}}% package name
+\newcommand{\doccls}[1]{\texttt{#1}}% document class name
+\newcommand{\docclsopt}[1]{\texttt{#1}}% document class option name
+
+\usepackage{titlesec} % Make sure to include this package
+
+% Custom appendix command
+\newcommand{\customappendix}{
+    \clearpage % Ensure a page break
+    \appendix % Mark the beginning of appendices
+    \pagestyle{empty} % Optional: Removes header/footer if desired
+    \titleformat{\section}[display]{\normalfont\Large\bfseries}{\appendixname~\thesection}{0pt}{\Large}
+    \titlespacing*{\section}{0pt}{50pt}{40pt}
+    \section*{Appendices} % This adds the title "Appendices"
+    \addcontentsline{toc}{section}{Appendices} % Optional: Adds "Appendices" to the table of contents
+}
+
+\begin{document}
+
+\maketitle% this prints the handout title, author, and date
+
+\begin{abstract}
+\noindent This paper outlines how actors involved in an NFT Marketplace based supply chain are organised and managed under
+a strict provenance regime. In particular it talks of domain specific smart contracts, multi-sig and how relationships are
+tracked and recorded.
+
+\end{abstract}
+
+%\printclassoptions
+\marginnote{See the paper on coupling real and virtual worlds.}
+
+\section{Supply Chain tracking}\label{sec:page-layout}
+Supply chain tracking is important across many domains. These include materials procurement in the defence sector,
+distribution of public examinations, assembly and distribition of drugs from manifacture, to wholssale, hospitals
+and patients to name a few.
+
+It is of primary importance to track relationships of organisations and the individuals that participate (the stakeholders) in order for the
+provenance record is complete. For example the individual batching drugs and the patient to whom the medicines are dispensed.
+Other examples include recording organisational and team  structures for silicon chip design projects allowing design contributions
+to be tracked at the team and individual level.
+
+Lockular's WAM system is a smart contract based app that is used to record organisational structures, team members and organisational
+relationships across the group of stakeholders which in all likelihood span organisations. WAM is foundational in establishing multi-sig
+across the group of stakeholders.
+
+\section{Workflow Actor Management System}\label{sec:page-layout}
+Workflow Actor Management System (WAM) is a smart contract-based app used to facilitate multi-sig for organisational structures. The actual structures
+represented depend on the supply chain domain and are determined by the smart contract definitions. Often they involve globally labelled divisions divisions,
+teams, and members. Use of multi-sig across teams significantly enhances security, authorisation, and decision-making processes. WAM requires configuration for a
+specific domain. Configuration is made by a smart contract definition that addresses key considerations in respect of the domain:
+
+\begin{itemize}
+    \item Representation of the stakeholder structure. In all likelihood this addresses inter-organisational hierarchical structures:
+    \begin{itemize}
+        \item Organisations are often divided by division which often have geographical connotation
+        \item Stakeholders work in a division and are assigned one or many roles
+        \item Role and division may have restricted approval and, or access
+    \end{itemize}
+    \item Multi-Sig Rules Definition: Rules are defined for multi-sig within the organisational structures. This involves deciding how many
+    signatures (approvals) are required for different types of transactions or decisions at each level of the those organisations involved (division, team,
+    member). This requires making decisions around the following:
+    \begin{itemize}
+        \item Global Rules: These apply to the entire organisation, for example financial thresholds above which multi-sig is required.
+        \item Divisional/Team Rules: Specific rules for divisions or teams, based on the sensitivity or importance of the decisions.
+        \item Role-Based Rules: Rules that apply based on the role of a member within the organization, such as managers having different thresholds
+        or permissions.
+    \end{itemize}
+    \item Adjustment of the smart contract to the Multi-Sig Mechanism: This involves creating a contract structure that:
+    \begin{itemize}
+        \item Store Proposals: Create a structure to store proposals or transactions that require approval. Each proposal should include details
+        like the type of decision, the required number of signatures, and the current number of approvals.
+        \item Manage Signatures: Develop functions that allow eligible members to sign or approve proposals. Ensure that each member can only sign
+        a proposal once and that their signature is authenticated.
+        \item Execute Decisions: Once a proposal has received the required number of signatures, execute the decision. This could involve changing
+        the state of the smart contract, transferring assets, or any other action that was proposed.
+    \end{itemize}
+    \item Role-Based Access Control (RBAC) considerations. Integrate RBAC to manage who can create proposals and who can sign them. This involves:
+    \begin{itemize}
+        \item Defining Roles: Define roles within your organization, such as admin, manager, team leader, etc.
+        \item Assigning Permissions: Assign permissions to these roles regarding who can initiate proposals and who is authorised to sign them.
+        \item Role Assignment: Assign roles to individual members within your organisational structure.
+    \end{itemize}
+    \item User Interface for Proposals and Signatures. Develop a user-friendly interface for the domain that allows members to:
+    \begin{itemize}
+        \item Join the workflow at the appropriate points signing in via their wallets. Generically, the tasks they address are called proposals.
+        Here stakeholders are able to view open proposals that they are eligible to sign.
+        \item Sign Proposals: A simple mechanism for stakeholders to sign or approve proposals they agree with.
+        \item Track Progress: Stakeholders are able to see the current number of signatures on a proposal and whether it has met the required
+        threshold for approval.
+        \item Wallet Integration: For a stakeholder to participate in a multi-sig scheme within the Polkadot ecosystem, their Polkadot.js wallet
+        is a key interface. The wallet stores the stakeholder's private keys securely and is used to sign transactions or approvals as
+        part of the multi-sig process.
+    \end{itemize}
+    \item Multi-Sig Wallet integration (polkadot.js)
+    \begin{itemize}
+        \item Wallet Integration: For a stakeholder to participate in a multi-sig scheme within the Polkadot ecosystem, their Polkadot.js wallet
+        is one of the key interfaces. This wallet stores their private keys securely and be used to sign transactions or approvals as part of the multi-sig
+        process.
+        \item Signing Transactions: In a multi-sig setup, a transaction (such as approving a supply chain action or executing a contract function)
+        requires signatures from multiple stakeholders before it can be executed on the blockchain. Stakeholders use their Polkadot.js wallets to
+        review and sign these transactions, with the wallet ensuring the security of their private keys during the signing process.
+        \item Smart Contract Interaction: When interacting with a smart contract that requires multi-sig approvals, stakeholders would use their
+        Polkadot.js wallets to initiate transactions or to sign off on proposals made by others. The smart contract would then verify that the required
+        number of signatures has been collected before executing the agreed-upon action.
+        \item Configuration and Management: The initial setup of a multi-sig arrangement, including specifying which accounts are part of the multi-sig and
+        defining the rules (e.g., how many signatures are needed for different types of transactions), is managed through interactions initiated
+        from Polkadot.js wallets. This setup should be encoded in the domain specific smart contract governing the multi-sig process.
+        \item Security and Authentication: The Polkadot.js wallet plays a crucial role in the security and authentication process. It ensures that
+        only authorised stakeholders, who hold the corresponding private keys, can sign off on multi-sig transactions. This adds an additional layer
+        of security to the multi-sig process, as the wallet's security features protect against unauthorised access.
+    \end{itemize}
+\end{itemize}
+
+\section{Benefits}\label{sec:page-layout}
+Once Lockular WAM is configured for a given domain this operates as a multi-sig smart contract based system [within as Polkadot Parachain and Marketplace]
+and thereby manages supply chain activities across participating stakeholders, spanning multiple organisations, several key significant pieces of information
+can be discovered and tracked. Transparency and traceability are among the core benefits of using blockchain technology in supply chain management. In detail
+here's what can be discovered:
+\begin{itemize}
+\item Transaction History and Provenance
+\begin{itemize}
+    \item Asset Origin: The origin of goods can be traced back to their source, including details about the manufacturer, the location, and the date of
+    production. This is particularly valuable for verifying the authenticity of products and ensuring they meet regulatory standards.
+    \item Ownership Transfers: Every transfer of goods between stakeholders in the supply chain is recorded on the blockchain, providing a clear history
+    of ownership. This helps in verifying the chain of custody and ensuring that goods have not been tampered with or diverted.
+\end{itemize}
+\item Compliance and Certification
+\begin{itemize}
+    \item Regulatory Compliance: Information about compliance with relevant regulations and standards can be stored on the blockchain. This includes
+    certifications, inspection reports, and compliance checks, which are crucial for industries with strict regulatory requirements, such as
+    pharmaceuticals and food.
+    \item Certification Verification: Certifications for organic, fair-trade, or sustainability credentials can be verified by accessing the blockchain. This
+    supports claims about product quality and ethical standards, enhancing consumer trust.
+\end{itemize}
+\item Operational Insights
+\begin{itemize}
+    \item Supply Chain Efficiency: By analysing transaction times and movement of goods, organisations can identify bottlenecks or inefficiencies in the
+    supply chain. This data can inform operational improvements and optimizations.
+    \item Inventory Management: Real-time data on the movement of goods provides insights into inventory levels across the supply chain, helping in
+    demand forecasting and reducing the risk of overstocking or stockouts.
+\end{itemize}
+\item Security and Risk Management
+\begin{itemize}
+    \item Fraud Prevention: The immutable nature of blockchain records helps in preventing fraud, as any attempt to alter transaction history or forge
+    documents would be evident.
+    \item Dispute Resolution: The clear and auditable trail of transactions and approvals facilitates faster resolution of disputes between stakeholders,
+    as there is a reliable record of agreements and transactions.
+\end{itemize}
+\item Stakeholder Collaboration and Trust
+\begin{itemize}
+    \item Transparent Operations: The visibility of supply chain activities to all authorised stakeholders fosters a culture of transparency, building
+    trust among participants.
+    \item Collaboration Opportunities: Shared insights into the supply chain can reveal opportunities for collaboration, such as joint efforts to
+    improve sustainability or efficiency.
+\end{itemize}
+\item Consumer Insights
+\begin{itemize}
+    \item Product Journey: End consumers can access information about the journey of a product from production to retail, enhancing transparency and
+    potentially influencing purchasing decisions.
+    \item Authenticity Verification: Consumers concerned about counterfeit products can verify the authenticity of their purchases through the blockchain,
+    enhancing brand trust.
+\end{itemize}
+\item Errata Management significantly improving the way errors, defects, or recalls are handled across the supply chain.
+\begin{itemize}
+    \item Real-Time Tracking: With every product and batch tracked on the blockchain, identifying where and when an issue arises becomes much more
+    straightforward. This could include defects in manufacturing, issues during transportation, or any other problems that occur along the supply chain.
+    \item Immutable Records: The blockchain's immutable record ensures that once an issue is logged, it cannot be altered or deleted, providing a transparent
+    and accurate history of product quality and handling.
+    \item Smart Contract Triggers: Smart contracts can be programmed to automatically notify relevant stakeholders when an issue is detected. For example,
+    if a product fails to meet certain quality standards at a checkpoint, the smart contract could immediately alert the manufacturer, distributor, and
+    even end consumers if necessary.
+    \item Targeted Recalls: By having detailed records of the entire supply chain, recalls can be conducted more efficiently and precisely. Instead of
+    recalling vast quantities of products, companies can target only those batches or items that are affected.
+    \item Consumer Safety: For industries like pharmaceuticals and food, rapid response to quality issues is critical for consumer safety. Blockchain can
+    facilitate this by quickly tracing and removing compromised products from the supply chain.
+\end{itemize}
+\end{itemize}
+
+\section{Summary}\label{sec:page-layout}
+The implementation of a multi-sig smart contract system for supply chain management on the blockchain offers comprehensive visibility into supply chain
+activities. It not only enhances operational efficiency, compliance, and security but also builds a foundation of trust among stakeholders and with end
+consumers. This level of transparency and traceability is transformative, potentially reshaping how supply chains are managed across industries.
+
+\bibliographystyle{plain}
+\bibliography{thebib} % This assumes you have a file named 'your_bib_file.bib'
+
+\end{document}
