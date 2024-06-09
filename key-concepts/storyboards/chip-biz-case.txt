@@ -1,0 +1,17 @@
+Leveraging Blockchain to gain deeper understanding of the materials inside your chips....the chip's Provenance
+
+There are literally billions of transistors and component blocks being brought in from multiple places
+
+Chip blocks can be from an open source community, where the provenance may not be clear
+
+People might bring in a piece of a design for a chip block that has been made in China without anyone knowing what is in it
+
+The problem is how do we know absolutely who worked on every design and every part design of a chip 
+
+Lockular has a blockchain based solution that tracks and attributes design changes to each and every human involved
+
+Lockular has a proof of concept deployed with Codasip and German RISC-V design tool vendor
+
+Codasip provides Lockular's first route to market for the blockchain based solution
+
+We are seeking investment to engage the chip community in support of a blockchain chip provenance data standard
