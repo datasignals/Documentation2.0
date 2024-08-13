@@ -1,0 +1,22 @@
+Utilising blockchain technology to create a universally compatible filesystem that offers unalterable tracking of data provenance.
+
+The problem - The need to definitively trace the origin and modification history of electronic artifacts is becoming increasingly evident. This necessity has been underscored by Richard Grisenthwaite regarding microchip designs and similarly emphasised by the US Department of Defense in their recent requests for information to the microchip sector.
+
+There is a need to ensure that records are secure and untampered with, crucial for accessing criminal evidence and conducting computer audits, such as those seen with the UK Post Office Horizon system.
+
+Our solution - a computer filesystem that tracks changes absolutely using blockchain and can be plugged into any environment and service any application.
+
+We have two customers.
+A German microchip design tool company named Codasip utilises the filesystem to immutably track design changes made by chip designers.
+Additionally, Sabien employs the filesystem in IoT devices to monitor energy consumption, ensuring secure capture and accountable usage of time series carbon data emitted by these devices.
+Similarly, the Indian government has a requirement for secure IoT solutions for intrusion detection devices deployed along the Indian border.
+
+Competitors include Apple, ProtonMail, DropBox, Red Hat, and WMWare, all of which provide secure, pluggable filesystems, some tailored for specific environments like Kubernetes. Lockular differentiates itself by basing its secure filesystem on blockchain technology, which inherently tracks changes and ensures undeniable provenance.
+
+Market Size: As of 2020, the global cloud storage market was estimated at around USD 50 billion and is projected to grow to approximately USD 150 billion by 2026, with an expected compound annual growth rate (CAGR) of about 22%.
+
+Team: Gary was a trailblazer in the UK's first internet banking system, First Direct, during the 90s. He has since concentrated on enhancing secure cloud storage and tracking the provenance of cloud computing. Ron has been at the helm of high-tech companies for over 25 years, including Imagination Technologies in the UK, and has sustained a robust technological partnership with Apple for more than two decades.
+
+Over its six-year history, Lockular has generated approximately GBP 1 million in revenue. The majority of its operations have been focused on research and development, with trial implementations tailored to two distinct use cases for two separate customers.
+
+The request is for additional investment to enhance access to filesystem provenance information embedded in the blockchain, including automated analysis and reporting by AI bots. Further adaptations are needed to manage large binary objects and to launch a direct key store service based on principles similar (but with provenance) to OnePassword. Improvements to simplify the onboarding process are also sought.

@@ -1,0 +1,766 @@
+\documentclass{tufte-handout}
+
+%\geometry{showframe}% for debugging purposes -- displays the margins
+
+\usepackage{amsmath}
+\usepackage{listings}
+\usepackage{color}
+
+% Set up the images/graphics package
+\usepackage{graphicx}
+\setkeys{Gin}{width=\linewidth,totalheight=\textheight,keepaspectratio}
+\graphicspath{{graphics/}}
+
+\title{Tokenomics for LokuBox \\
+\large The pluggable provenance tracking filesystem}
+\author[Gary Mawdsley]{Gary Mawdsley CTO/CEO Lockular Limited}
+\date{May 8th 2024\thanks{Work in progress}}  % if the \date{} command is left out, the current date will be used
+
+% The following package makes prettier tables.  We're all about the communication!
+\usepackage{booktabs}
+
+% The units package provides nice, non-stacked fractions and better spacing
+% for units.
+\usepackage{units}
+
+% The fancyvrb package lets us customize the formatting of verbatim
+% environments.  We use a slightly smaller font.
+\usepackage{fancyvrb}
+\fvset{fontsize=\normalsize}
+
+% Small sections of multiple columns
+\usepackage{multicol}
+
+% Provides paragraphs of dummy text
+\usepackage{lipsum}
+\usepackage{tabularx}
+\usepackage{booktabs}
+
+% These commands are used to pretty-print LaTeX commands
+\newcommand{\doccmd}[1]{\texttt{\textbackslash#1}}% command name -- adds backslash automatically
+\newcommand{\docopt}[1]{\ensuremath{\langle}\textrm{\textit{#1}}\ensuremath{\rangle}}% optional command argument
+\newcommand{\docarg}[1]{\textrm{\textit{#1}}}% (required) command argument
+\newenvironment{docspec}{\begin{quote}\noindent}{\end{quote}}% command specification environment
+\newcommand{\docenv}[1]{\textsf{#1}}% environment name
+\newcommand{\docpkg}[1]{\texttt{#1}}% package name
+\newcommand{\doccls}[1]{\texttt{#1}}% document class name
+\newcommand{\docclsopt}[1]{\texttt{#1}}% document class option name
+
+\usepackage{titlesec} % Make sure to include this package
+
+% Custom appendix command
+\newcommand{\customappendix}{
+    \clearpage % Ensure a page break
+    \appendix % Mark the beginning of appendices
+    \pagestyle{empty} % Optional: Removes header/footer if desired
+    \titleformat{\section}[display]{\normalfont\Large\bfseries}{\appendixname~\thesection}{0pt}{\Large}
+    \titlespacing*{\section}{0pt}{50pt}{40pt}
+    \section*{Appendices} % This adds the title "Appendices"
+    \addcontentsline{toc}{section}{Appendices} % Optional: Adds "Appendices" to the table of contents
+}
+
+% Define colors
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+% Setup the listings package
+\lstset{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
+\begin{document}
+
+\section*{Creating a Tokenomics Model for LokuBox Service}
+
+Creating a tokenomics model for a LokuBox service involves several key components. Here's a high-level overview of what the tokenomics model must consider:
+
+\subsection*{1. Token Supply}
+\begin{itemize}
+    \item \textbf{Total Supply}: Define the maximum number of tokens that will ever exist.
+    \item \textbf{Initial Supply}: The number of tokens available at launch.
+\end{itemize}
+
+\subsection*{2. Token Distribution}
+\begin{itemize}
+    \item \textbf{Founders and Team}: Percentage allocated to the founding team.
+    \item \textbf{Advisors}: Tokens set aside for advisors.
+    \item \textbf{Investors}: Tokens allocated for early investors or through an Initial Coin Offering (ICO).
+    \item \textbf{Community and Ecosystem}: Tokens reserved for community incentives, partnerships, and ecosystem development.
+    \item \textbf{Reserves}: Tokens held in reserve for future use.
+\end{itemize}
+
+\subsection*{3. Token Utility}
+\begin{itemize}
+    \item \textbf{Access to Services}: Tokens required to access or use the blockchain service.
+    \item \textbf{Governance}: Tokens used for voting on protocol changes or governance decisions.
+    \item \textbf{Staking}: Tokens that can be staked to earn rewards or participate in network validation.
+    \item \textbf{Incentives}: Tokens used to incentivise certain behaviours, such as contributing to the network or providing liquidity.
+\end{itemize}
+
+\subsection*{4. Token Issuance and Inflation}
+\begin{itemize}
+    \item \textbf{Initial Distribution}: How tokens are initially distributed.
+    \item \textbf{Inflation Rate}: If new tokens are minted over time, then the rate of inflation should be defined.
+    \item \textbf{Burn Mechanism}: If applicable, describe how tokens are burned to reduce supply.
+\end{itemize}
+
+\subsection*{5. Economic Model}
+\begin{itemize}
+    \item \textbf{Revenue Model}: How the service generates revenue (e.g., transaction fees, subscription fees).
+    \item \textbf{Token Flow}: How tokens move within the ecosystem (e.g., from users to service providers).
+    \item \textbf{Market Dynamics}: Factors influencing token demand and supply.
+\end{itemize}
+
+\subsection*{6. Governance}
+\begin{itemize}
+    \item \textbf{Decision-Making Process}: How decisions are made within the ecosystem.
+    \item \textbf{Voting Mechanism}: How token holders can vote on proposals.
+\end{itemize}
+
+\subsection*{7. Security and Compliance}
+\begin{itemize}
+    \item \textbf{Regulatory Compliance}: Ensuring the tokenomics model complies with relevant regulations.
+    \item \textbf{Security Measures}: Steps taken to secure the token and the network.
+\end{itemize}
+
+\section*{Strawman Tokenomics Model for LokuBox}
+
+Here's a tokenomics model for a LokuBox service:
+
+\subsection*{Token Supply}
+\begin{itemize}
+    \item \textbf{Total Supply}: 1,000,000,000 tokens
+    \item \textbf{Initial Supply}: 200,000,000 tokens
+\end{itemize}
+
+\subsection*{Token Distribution}
+\begin{itemize}
+    \item \textbf{Founders and Team}: 20\% (200,000,000 tokens)
+    \item \textbf{Advisors}: 5\% (50,000,000 tokens)
+    \item \textbf{Investors}: 15\% (150,000,000 tokens)
+    \item \textbf{Community and Ecosystem}: 30\% (300,000,000 tokens)
+    \item \textbf{Reserves}: 30\% (300,000,000 tokens)
+\end{itemize}
+
+\subsection*{Token Utility}
+\begin{itemize}
+    \item \textbf{Access to Services}: Tokens required to access premium features.
+    \item \textbf{Governance}: Token holders can vote on protocol changes.
+    \item \textbf{Staking}: Tokens can be staked to earn rewards.
+    \item \textbf{Incentives}: Tokens used to reward users for contributing to the network.
+\end{itemize}
+
+\subsection*{Token Issuance and Inflation}
+\begin{itemize}
+    \item \textbf{Initial Distribution}: 200,000,000 tokens distributed at launch.
+    \item \textbf{Inflation Rate}: 2\% annual inflation.
+    \item \textbf{Burn Mechanism}: 1\% of transaction fees are burned.
+\end{itemize}
+
+\subsection*{Economic Model}
+\begin{itemize}
+    \item \textbf{Revenue Model}: Transaction fees, subscription fees for premium services.
+    \item \textbf{Token Flow}: Users pay tokens to access services, service providers earn tokens.
+    \item \textbf{Market Dynamics}: Demand driven by service usage, supply managed through staking and burning.
+\end{itemize}
+
+\subsection*{Governance}
+\begin{itemize}
+    \item \textbf{Decision-Making Process}: Proposals submitted by token holders, voted on by the community.
+    \item \textbf{Voting Mechanism}: One token equals one vote.
+\end{itemize}
+
+\subsection*{Security and Compliance}
+\begin{itemize}
+    \item \textbf{Regulatory Compliance}: Adherence to local and international regulations.
+    \item \textbf{Security Measures}: Regular audits, secure smart contract development.
+\end{itemize}
+
+Again this is a strawman framework and we'll tailor to fit the specific needs and goals of the LokuBox service as we review.
+
+\section*{Inflation in a Tokenomics Model}
+
+Inflation in a tokenomics model can serve several purposes:
+
+\subsection*{1. Incentivising Participation}
+\begin{itemize}
+    \item \textbf{Staking Rewards}: Inflation can be used to reward participants who stake their tokens, helping to secure the network.
+    \item \textbf{Mining Rewards}: In proof-of-work systems, inflation rewards miners for validating transactions and maintaining the blockchain.
+\end{itemize}
+
+\subsection*{2. Encouraging Network Growth}
+\begin{itemize}
+    \item \textbf{User Acquisition}: Newly minted tokens can be distributed to new users or developers to encourage adoption and growth of the ecosystem.
+    \item \textbf{Ecosystem Development}: Inflation can fund development grants, partnerships, and other initiatives that contribute to the ecosystem's expansion.
+\end{itemize}
+
+\subsection*{3. Maintaining Network Security}
+\begin{itemize}
+    \item \textbf{Validator Incentives}: In proof-of-stake systems, inflation can incentivise validators to act honestly and maintain the network's security.
+\end{itemize}
+
+\subsection*{4. Economic Stability}
+\begin{itemize}
+    \item \textbf{Liquidity}: A controlled inflation rate can ensure there are enough tokens in circulation to facilitate transactions and maintain liquidity.
+    \item \textbf{Supply Management}: Inflation can help manage the token supply, preventing issues like hoarding and ensuring tokens are available for use within the ecosystem.
+\end{itemize}
+
+\subsection*{5. Governance and Flexibility}
+\begin{itemize}
+    \item \textbf{Adaptive Policies}: Inflation allows for adaptive economic policies that can respond to changing network conditions and needs.
+\end{itemize}
+
+\subsection*{Example: Staking Rewards}
+
+In a proof-of-stake blockchain, inflation might be used to reward users who lock up their tokens to help validate transactions.
+This not only secures the network but also encourages long-term holding and reduces token velocity, potentially stabilising the token's value.
+
+\subsection*{Example: Ecosystem Development}
+
+A portion of the newly minted tokens could be allocated to a development fund, which can be used to support projects that enhance the ecosystem, such as new dApps,
+infrastructure improvements, or community initiatives.
+
+\subsection*{Balancing Inflation}
+
+While inflation can have these benefits, it's crucial to balance it carefully to avoid negative effects such as:
+\begin{itemize}
+    \item \textbf{Devaluation}: Excessive inflation can devalue the token, reducing its purchasing power and attractiveness.
+    \item \textbf{User Discontent}: If users feel that their holdings are being diluted too quickly, it can lead to dissatisfaction and reduced trust in the project.
+\end{itemize}
+
+Inflation, when managed properly, can be a powerful tool to incentivize participation, ensure network security, and foster ecosystem growth.
+However, it requires careful planning and governance to balance the benefits against potential downsides.
+
+\section*{Getting Your Tokens Listed and Running a Service on a Blockchain}
+
+Getting tokens listed and running a service on a blockchain involves several steps. Here's a high-level guide to the process:
+
+\subsection*{1. Token Creation}
+
+\subsubsection*{Define Token Specifications}
+\begin{itemize}
+    \item \textbf{Blockchain Platform}: Choose a blockchain platform (e.g., Ethereum, Binance Smart Chain, Solana).
+    \item \textbf{Token Standard}: Select a token standard (e.g., ERC-20 for Ethereum).
+    \item \textbf{Tokenomics}: Finalize your tokenomics model (total supply, distribution, utility, etc.).
+\end{itemize}
+
+\subsubsection*{Develop Smart Contracts}
+\begin{itemize}
+    \item \textbf{Write Smart Contracts}: Develop the smart contracts for your token.
+    \item \textbf{Audit}: Get your smart contracts audited by a reputable security firm to ensure they are secure and free of vulnerabilities.
+\end{itemize}
+
+\subsection*{2. Deploying the Token}
+
+\subsubsection*{Deploy Smart Contracts}
+\begin{itemize}
+    \item \textbf{Testnet Deployment}: Deploy your smart contracts on a testnet to ensure everything works as expected.
+    \item \textbf{Mainnet Deployment}: Once tested, deploy your smart contracts on the mainnet.
+\end{itemize}
+
+\subsection*{3. Running the Service}
+
+\subsubsection*{Develop the Service}
+\begin{itemize}
+    \item \textbf{Backend Development}: Develop the backend infrastructure for the LokuBox service.
+    \item \textbf{Frontend Development}: Create the user interface for the service.
+    \item \textbf{Integration}: Integrate the LOKU token with the service, ensuring that users can interact with the blockchain as needed.
+\end{itemize}
+
+\subsubsection*{Launch the Service}
+\begin{itemize}
+    \item \textbf{Beta Testing}: For the full service we must conduct beta testing with a small group of users to gather feedback and make inevitable improvements.
+    \item \textbf{Main Launch}: Launch the service to the public on a mainnet.
+\end{itemize}
+
+\subsection*{4. Getting Tokens Listed}
+
+\subsubsection*{Prepare Documentation}
+\begin{itemize}
+    \item \textbf{Whitepaper}: There must eist a detailed whitepaper explaining the LokuBox proposition, tokenomics, and use cases.
+    \item \textbf{Website}: Create a professional LokuBox focused version of the website with all relevant information about LokuBox.
+\end{itemize}
+
+\subsubsection*{Apply for Listings}
+\begin{itemize}
+    \item \textbf{Centralised Exchanges (CEXs)}: Apply to get your token listed on centralised exchanges like Binance, Coinbase, etc.
+    This will involve filling out application forms and meeting specific requirements.
+    \item \textbf{Decentralised Exchanges (DEXs)}: List your token on decentralised exchanges like Uniswap, SushiSwap, PancakeSwap, etc.
+    This usually involves providing liquidity to a trading pair.
+\end{itemize}
+
+\subsubsection*{Marketing and Community Building}
+\begin{itemize}
+    \item \textbf{Community Engagement}: Build and engage with your community on platforms like Telegram, Discord, and Twitter.
+    \item \textbf{Marketing Campaigns}: Run marketing campaigns to increase awareness and attract users and investors.
+\end{itemize}
+
+\subsection*{5. Ongoing Management}
+
+\subsubsection*{Governance}
+\begin{itemize}
+    \item \textbf{DAO}: Perhaps set up a DAO (Decentralised Autonomous Organization) for community governance?
+    \item \textbf{Voting}: maybe implement a voting mechanism for token holders to participate in decision-making?
+\end{itemize}
+
+\subsubsection*{Maintenance and Updates}
+\begin{itemize}
+    \item \textbf{Regular Updates}: Continuously improve the service and smart contracts based on user feedback and technological advancements.
+    \item \textbf{Security Audits}: Conduct regular security audits to ensure the ongoing security of the smart contracts and infrastructure.
+\end{itemize}
+
+\subsection*{Example: Token Deployment on Ethereum}
+
+Here's a simplified example of deploying an ERC-20 token on Ethereum:
+
+\begin{verbatim}
+pragma solidity ^0.8.0;
+
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+
+contract MyToken is ERC20 {
+    constructor(uint256 initialSupply) ERC20("MyToken", "MTK") {
+        _mint(msg.sender, initialSupply);
+    }
+}
+\end{verbatim}
+
+\subsection*{Deployment Script}
+
+\begin{verbatim}
+const { ethers } = require("hardhat");
+
+async function main() {
+    const [deployer] = await ethers.getSigners();
+    console.log("Deploying contracts with the account:", deployer.address);
+
+    const MyToken = await ethers.getContractFactory("MyToken");
+    const token = await MyToken.deploy(1000000); // 1,000,000 tokens
+
+    console.log("Token deployed to:", token.address);
+}
+
+main()
+    .then(() => process.exit(0))
+    .catch((error) => {
+        console.error(error);
+        process.exit(1);
+    });
+\end{verbatim}
+
+\subsection*{Conclusion}
+
+By following these steps, you can create, deploy, and list your token, as well as run a blockchain-based service.
+Each step requires careful planning and execution to ensure the success and security of your project.
+
+\section*{Protocols for Liquidity}
+
+Liquidity protocols play a crucial role in ensuring that a token can be easily bought, sold, and traded, which is essential
+for the health and success of a token ecosystem. Here's how liquidity protocols fit into the tokenomics model:
+
+\subsection*{Importance of Liquidity Protocols}
+
+\subsubsection*{1. Market Accessibility}
+\begin{itemize}
+    \item \textbf{Ease of Trading}: High liquidity ensures that users can easily trade the token without significant price slippage.
+    \item \textbf{Exchange Listings}: Adequate liquidity is often a prerequisite for getting listed on major exchanges.
+\end{itemize}
+
+\subsubsection*{2. Price Stability}
+\begin{itemize}
+    \item \textbf{Reduced Volatility}: Liquidity helps stabilize the token price by allowing large trades to occur without drastically affecting the market price.
+\end{itemize}
+
+\subsubsection*{3. User Confidence}
+\begin{itemize}
+    \item \textbf{Trust}: Users are more likely to trust and invest in a token that has good liquidity, as it indicates a healthy and active market.
+\end{itemize}
+
+\subsection*{Common Liquidity Protocols}
+
+\subsubsection*{1. Automated Market Makers (AMMs)}
+\begin{itemize}
+    \item \textbf{Uniswap}: A popular decentralised exchange (DEX) on Ethereum that uses liquidity pools to facilitate trading.
+    \item \textbf{SushiSwap}: Another DEX that operates similarly to Uniswap but offers additional features like yield farming.
+    \item \textbf{PancakeSwap}: A DEX on Binance Smart Chain (BSC) that also uses AMMs.
+\end{itemize}
+
+\subsubsection*{2. Liquidity Mining}
+\begin{itemize}
+    \item \textbf{Incentives}: Offering rewards (in the form of your token or another token) to users who provide liquidity to your pools.
+    \item \textbf{Yield Farming}: Users can earn additional rewards by staking their liquidity provider (LP) tokens in yield farming contracts.
+\end{itemize}
+
+\subsubsection*{3. Centralised Exchange Liquidity Programs}
+\begin{itemize}
+    \item \textbf{Market Making}: Partnering with market makers to ensure there is always buy and sell orders for your token on centralised exchanges.
+    \item \textbf{Liquidity Provision}: Some centralised exchanges offer programs where they provide liquidity in exchange for a fee or a share of the token supply.
+\end{itemize}
+
+\subsection*{An Example: Adding Liquidity on Uniswap}
+
+Here's a simplified example of we might add liquidity to a Uniswap pool:
+
+\subsubsection*{Step 1: Create a Liquidity Pool}
+\begin{itemize}
+    \item \textbf{Deploy Your Token}: Ensure your ERC-20 token is deployed on the Ethereum mainnet.
+    \item \textbf{Add Liquidity}: Use the Uniswap interface or a smart contract to add liquidity.
+\end{itemize}
+
+\subsubsection*{Step 2: Add Liquidity via Smart Contract}
+
+\begin{verbatim}
+const { ethers } = require("hardhat");
+
+async function main() {
+    const [deployer] = await ethers.getSigners();
+    const tokenAddress = "0xYourTokenAddress"; // Replace with your token address
+    const uniswapRouterAddress = "0xUniswapV2Router02Address"; // Uniswap V2 Router address
+
+    const Token = await ethers.getContractFactory("MyToken");
+    const token = Token.attach(tokenAddress);
+
+    const UniswapV2Router02 = await ethers.getContractAt("IUniswapV2Router02", uniswapRouterAddress);
+
+    const amountTokenDesired = ethers.utils.parseUnits("1000", 18); // 1000 tokens
+    const amountETHDesired = ethers.utils.parseEther("10"); // 10 ETH
+
+    await token.approve(uniswapRouterAddress, amountTokenDesired);
+
+    await UniswapV2Router02.addLiquidityETH(
+        tokenAddress,
+        amountTokenDesired,
+        0,
+        0,
+        deployer.address,
+        Math.floor(Date.now() / 1000) + 60 * 10, // 10 minutes deadline
+        { value: amountETHDesired }
+    );
+
+    console.log("Liquidity added to Uniswap pool");
+}
+
+main()
+    .then(() => process.exit(0))
+    .catch((error) => {
+        console.error(error);
+        process.exit(1);
+    });
+\end{verbatim}
+
+\subsection*{Conclusion}
+
+Incorporating liquidity protocols into the tokenomics model is essential for ensuring market accessibility, price stability, and user confidence.
+By leveraging AMMs, liquidity mining, and centralised exchange programs, you can create a robust and liquid market for your token, which is crucial for the
+long-term success of the LokuBox blockchain service.
+
+\section*{Organizing Tokens and Charging Points with zk-Rollups}
+
+Given our service's requirements and it's potential use of zk-rollups, here's a detailed approach to organizing the LOKU tokens and charging points, along with
+comments on zk-rollups and other relevant considerations:
+
+\subsection*{Token Organization and Charging Points}
+
+\begin{itemize}
+    \item \textbf{Token Utility}:
+    \begin{itemize}
+        \item \textbf{Service Access}: Users need to hold and spend the LOKU token to access the file tracking service.
+        \item \textbf{Transaction Fees}: Tokens are used to pay for recording changes on the blockchain.
+        \item \textbf{Audit Access}: Tokens are required to access and use the audit data for forensic purposes.
+    \end{itemize}
+    \item \textbf{Charging Points}:
+    \begin{itemize}
+        \item \textbf{File Tracking}: Charge tokens for each file tracked (new, changed, viewed).
+        \item \textbf{Batch Processing}: Offer discounted rates for batching multiple file changes into a single transaction.
+        \item \textbf{Audit Data Access}: Charge tokens for accessing historical audit data.
+    \end{itemize}
+\end{itemize}
+
+\subsection*{Strawman Token Flow}
+
+\begin{enumerate}
+    \item \textbf{User Purchases Tokens}: Users buy LOKU tokens from an exchange or directly from our platform.
+    \item \textbf{Service Usage}:
+    \begin{itemize}
+        \item \textbf{File Tracking}: Users spend tokens to record file changes.
+        \item \textbf{Batch Processing}: Users can opt to batch file changes, spending fewer tokens per file.
+    \end{itemize}
+    \item \textbf{Audit Access}: Users spend tokens to access and analyze audit data.
+\end{enumerate}
+
+\subsection*{zk-Rollups}
+
+zk-Rollups can significantly enhance the efficiency and scalability of our service by batching multiple transactions into a single transaction on the main blockchain.
+Here's how they can be integrated:
+
+\begin{itemize}
+    \item \textbf{Batching Transactions}:
+    \begin{itemize}
+        \item \textbf{Efficiency}: By batching multiple file changes into a single zk-rollup transaction,
+        the number of transactions that need to be recorded on the main blockchain is reduced, lowering costs.
+        \item \textbf{Scalability}: zk-Rollups handle a large number of transactions off-chain, improving the scalability of the service.
+    \end{itemize}
+    \item \textbf{Cost Reduction}:
+    \begin{itemize}
+        \item \textbf{Lower Fees}: zk-Rollups reduce the gas fees associated with recording each individual file change on the blockchain.
+        \item \textbf{Economies of Scale}: The more transactions you batch, the greater the cost savings.
+    \end{itemize}
+    \item \textbf{Security}:
+    \begin{itemize}
+        \item \textbf{Zero-Knowledge Proofs}: zk-Rollups use zero-knowledge proofs to ensure the integrity and validity of the batched transactions,
+        maintaining security while improving efficiency.
+    \end{itemize}
+\end{itemize}
+
+\subsection*{Implementation Steps}
+
+\begin{enumerate}
+    \item \textbf{Token Smart Contract}:
+    \begin{itemize}
+        \item Develop and deploy LOKU ERC-20 token smart contract.
+        \item Implement functions for spending tokens on file tracking and audit access.
+    \end{itemize}
+    \item \textbf{zk-Rollup Integration}:
+    \begin{itemize}
+        \item Choose a zk-rollup solution (e.g., zkSync, Loopring).
+        \item Integrate the zk-rollup solution with our service to batch file changes.
+    \end{itemize}
+    \item \textbf{Service Backend}:
+    \begin{itemize}
+        \item We have the backend infrastructure to handle file tracking, batching, and audit data access.
+        \item Implement logic to interact with the zk-rollup solution for batching transactions, this would replace substrate OCW.
+    \end{itemize}
+\end{enumerate}
+
+\subsection*{Example: Token Smart Contract}
+
+\begin{verbatim}
+pragma solidity ^0.8.0;
+
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+
+contract ServiceToken is ERC20 {
+    constructor(uint256 initialSupply) ERC20("ServiceToken", "STK") {
+        _mint(msg.sender, initialSupply);
+    }
+
+    function spendTokens(address from, uint256 amount) external {
+        _transfer(from, address(this), amount);
+    }
+}
+\end{verbatim}
+
+\subsection*{Example: zk-Rollup Integration}
+
+\subsubsection*{Step 1: Choose a zk-Rollup Solution}
+\begin{itemize}
+    \item \textbf{zkSync}: A popular zk-rollup solution for Ethereum.
+\end{itemize}
+
+\subsubsection*{Step 2: Integrate zkSync}
+
+\begin{verbatim}
+const { ethers } = require("hardhat");
+const zksync = require("zksync");
+
+async function main() {
+    const syncProvider = await zksync.getDefaultProvider("mainnet");
+    const ethProvider = ethers.getDefaultProvider("mainnet");
+
+    const wallet = new zksync.Wallet("YOUR_PRIVATE_KEY", syncProvider, ethProvider);
+
+    const batch = [
+        { to: "0xRecipientAddress1", token: "STK", amount: ethers.utils.parseUnits("10", 18) },
+        { to: "0xRecipientAddress2", token: "STK", amount: ethers.utils.parseUnits("20", 18) },
+        // Add more transactions as needed
+    ];
+
+    const batchTransaction = await wallet.batchTransfer(batch);
+    console.log("Batch transaction hash:", batchTransaction.hash);
+}
+
+main()
+    .then(() => process.exit(0))
+    .catch((error) => {
+        console.error(error);
+        process.exit(1);
+    });
+\end{verbatim}
+
+\subsection*{Conclusion}
+
+By organizing our tokens and charging points effectively, and leveraging zk-rollups for batching transactions, we can create a scalable, cost-efficient,
+and secure file tracking service. This approach not only reduces costs but also enhances the user experience by providing a seamless and efficient service.
+
+\section*{Allowing Users to Buy Tokens Directly from Your Platform}
+
+To allow users to buy tokens directly from our platform, we must implement a token sale mechanism, often referred to as a "crowdsale" or "initial coin offering (ICO)."
+Here's a step-by-step guide to setting this up:
+
+\subsection*{1. Smart Contract for Token Sale}
+
+We need a smart contract that handles the token sale. This contract will accept payments (usually in ETH) and distribute your tokens to buyers.
+
+\subsubsection*{Example: Token Sale Smart Contract}
+
+\begin{verbatim}
+pragma solidity ^0.8.0;
+
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
+
+contract TokenSale is Ownable {
+    IERC20 public token;
+    uint256 public rate; // Number of tokens per ETH
+    uint256 public startTime;
+    uint256 public endTime;
+
+    event TokensPurchased(address indexed purchaser, uint256 amount);
+
+    constructor(
+        IERC20 _token,
+        uint256 _rate,
+        uint256 _startTime,
+        uint256 _endTime
+    ) {
+        require(_rate > 0, "Rate must be greater than 0");
+        require(_startTime < _endTime, "Start time must be before end time");
+
+        token = _token;
+        rate = _rate;
+        startTime = _startTime;
+        endTime = _endTime;
+    }
+
+    modifier onlyWhileOpen() {
+        require(block.timestamp >= startTime && block.timestamp <= endTime, "Sale is not open");
+        _;
+    }
+
+    function buyTokens() public payable onlyWhileOpen {
+        uint256 tokenAmount = msg.value * rate;
+        require(token.balanceOf(address(this)) >= tokenAmount, "Not enough tokens in contract");
+
+        token.transfer(msg.sender, tokenAmount);
+        emit TokensPurchased(msg.sender, tokenAmount);
+    }
+
+    function withdrawFunds() public onlyOwner {
+        payable(owner()).transfer(address(this).balance);
+    }
+
+    function withdrawRemainingTokens() public onlyOwner {
+        uint256 remainingTokens = token.balanceOf(address(this));
+        token.transfer(owner(), remainingTokens);
+    }
+}
+\end{verbatim}
+
+\subsection*{2. Deploy the Smart Contract}
+
+Deploy both our token contract and the token sale contract to the Ethereum mainnet (or another blockchain of choice).
+
+\subsection*{3. Frontend Integration}
+
+Create a user-friendly interface on the LokuBox platform where users can interact with the token sale contract.
+
+\subsubsection*{Example: Frontend Integration with Web3.js}
+
+\begin{enumerate}
+    \item \textbf{Install Web3.js}:
+    \begin{verbatim}
+    npm install web3
+    \end{verbatim}
+    \item \textbf{Create a Simple Purchase Form}:
+    \begin{verbatim}
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Token Sale</title>
+    </head>
+    <body>
+        <h1>Buy Tokens</h1>
+        <form id="buyTokensForm">
+            <label for="ethAmount">Amount of ETH:</label>
+            <input type="text" id="ethAmount" name="ethAmount">
+            <button type="submit">Buy Tokens</button>
+        </form>
+
+        <script src="https://cdn.jsdelivr.net/npm/web3/dist/web3.min.js"></script>
+        <script src="app.js"></script>
+    </body>
+    </html>
+    \end{verbatim}
+    \item \textbf{Handle Token Purchase in JavaScript}:
+    \begin{verbatim}
+    const web3 = new Web3(Web3.givenProvider || "http://localhost:8545");
+
+    const tokenSaleAddress = "0xYourTokenSaleContractAddress"; // Replace with your TokenSale contract address
+    const tokenSaleABI = [ /* ABI of your TokenSale contract */ ];
+
+    const tokenSaleContract = new web3.eth.Contract(tokenSaleABI, tokenSaleAddress);
+
+    document.getElementById("buyTokensForm").addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        const ethAmount = document.getElementById("ethAmount").value;
+        const accounts = await web3.eth.requestAccounts();
+        const account = accounts[0];
+
+        tokenSaleContract.methods.buyTokens().send({
+            from: account,
+            value: web3.utils.toWei(ethAmount, "ether")
+        })
+        .on("transactionHash", (hash) => {
+            console.log("Transaction sent: ", hash);
+        })
+        .on("receipt", (receipt) => {
+            console.log("Transaction confirmed: ", receipt);
+        })
+        .on("error", (error) => {
+            console.error("Transaction failed: ", error);
+        });
+    });
+    \end{verbatim}
+\end{enumerate}
+
+\subsection*{4. Security and Compliance}
+
+\begin{itemize}
+    \item \textbf{KYC/AML}: Implement Know Your Customer (KYC) and Anti-Money Laundering (AML) procedures if required by your jurisdiction.
+    \item \textbf{Smart Contract Audits}: Ensure our smart contracts are audited by a reputable security firm to prevent vulnerabilities.
+\end{itemize}
+
+\subsection*{5. Marketing and Community Engagement}
+
+\begin{itemize}
+    \item \textbf{Announcements}: Announce the LOKU token sale on social media, forums, and through press releases.
+    \item \textbf{Community Building}: Engage with our community on platforms like Telegram, Discord, and Twitter to build trust and excitement around LokuBox.
+\end{itemize}
+
+\subsection*{Conclusion}
+
+By implementing a token sale smart contract and integrating it with a user-friendly frontend, we allow users to buy tokens directly from our platform.
+We must ensure we follow best practices for security and compliance to build trust and protect our users.
+\bibliography{tokenomics}
+\bibliographystyle{plainnat}
+\end{document}

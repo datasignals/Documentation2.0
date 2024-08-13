@@ -1,0 +1,170 @@
+\documentclass{tufte-handout}
+
+%\geometry{showframe}% for debugging purposes -- displays the margins
+
+\usepackage{amsmath}
+\usepackage{listings}
+\usepackage{color}
+
+% Set up the images/graphics package
+\usepackage{graphicx}
+\setkeys{Gin}{width=\linewidth,totalheight=\textheight,keepaspectratio}
+\graphicspath{{graphics/}}
+
+\title{Compare Layer1 Blockchain approaches \\
+\large With a view to scalability and easy deployment}
+\author[Gary Mawdsley]{Gary Mawdsley CTO/CEO Lockular Limited}
+\date{May 8th 2024\thanks{Work in progress}}  % if the \date{} command is left out, the current date will be used
+
+% The following package makes prettier tables.  We're all about the communication!
+\usepackage{booktabs}
+
+% The units package provides nice, non-stacked fractions and better spacing
+% for units.
+\usepackage{units}
+
+% The fancyvrb package lets us customize the formatting of verbatim
+% environments.  We use a slightly smaller font.
+\usepackage{fancyvrb}
+\fvset{fontsize=\normalsize}
+
+% Small sections of multiple columns
+\usepackage{multicol}
+
+% Provides paragraphs of dummy text
+\usepackage{lipsum}
+\usepackage{tabularx}
+\usepackage{booktabs}
+
+% These commands are used to pretty-print LaTeX commands
+\newcommand{\doccmd}[1]{\texttt{\textbackslash#1}}% command name -- adds backslash automatically
+\newcommand{\docopt}[1]{\ensuremath{\langle}\textrm{\textit{#1}}\ensuremath{\rangle}}% optional command argument
+\newcommand{\docarg}[1]{\textrm{\textit{#1}}}% (required) command argument
+\newenvironment{docspec}{\begin{quote}\noindent}{\end{quote}}% command specification environment
+\newcommand{\docenv}[1]{\textsf{#1}}% environment name
+\newcommand{\docpkg}[1]{\texttt{#1}}% package name
+\newcommand{\doccls}[1]{\texttt{#1}}% document class name
+\newcommand{\docclsopt}[1]{\texttt{#1}}% document class option name
+
+\usepackage{titlesec} % Make sure to include this package
+
+% Custom appendix command
+\newcommand{\customappendix}{
+    \clearpage % Ensure a page break
+    \appendix % Mark the beginning of appendices
+    \pagestyle{empty} % Optional: Removes header/footer if desired
+    \titleformat{\section}[display]{\normalfont\Large\bfseries}{\appendixname~\thesection}{0pt}{\Large}
+    \titlespacing*{\section}{0pt}{50pt}{40pt}
+    \section*{Appendices} % This adds the title "Appendices"
+    \addcontentsline{toc}{section}{Appendices} % Optional: Adds "Appendices" to the table of contents
+}
+
+% Define colors
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+% Setup the listings package
+\lstset{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
+\begin{document}
+
+\maketitle
+
+\section*{Solana}
+\begin{itemize}
+    \item \textbf{Consensus Mechanism}: Proof of History (PoH) combined with Proof of Stake (PoS).
+    \item \textbf{Transaction Speed}: High throughput, capable of processing over 50,000 transactions per second (TPS).
+    \item \textbf{Transaction Costs}: Very low fees.
+    \item \textbf{Smart Contracts}: Uses Rust and C for smart contract development.
+    \item \textbf{Scalability}: Highly scalable due to its unique consensus mechanism and architecture.
+\end{itemize}
+
+\section*{Aleph Zero}
+\begin{itemize}
+    \item \textbf{Consensus Mechanism}: Directed Acyclic Graph (DAG) combined with a consensus protocol called AlephBFT.
+    \item \textbf{Transaction Speed}: High throughput, capable of processing thousands of TPS.
+    \item \textbf{Transaction Costs}: Low fees.
+    \item \textbf{Smart Contracts}: Uses Substrate framework, allowing for smart contract development in Rust.
+    \item \textbf{Scalability}: Scalable due to its DAG structure and efficient consensus mechanism.
+\end{itemize}
+
+\section*{Polkadot}
+\begin{itemize}
+    \item \textbf{Consensus Mechanism}: Nominated Proof of Stake (NPoS).
+    \item \textbf{Transaction Speed}: Moderate throughput, with the ability to process around 1,000 TPS.
+    \item \textbf{Transaction Costs}: Variable fees, generally lower than Ethereum.
+    \item \textbf{Smart Contracts}: Uses Substrate framework, allowing for smart contract development in Rust.
+    \item \textbf{Scalability}: Highly scalable due to its parachain architecture, enabling multiple blockchains to interoperate and share security.
+\end{itemize}
+
+\section*{Ethereum}
+\begin{itemize}
+    \item \textbf{Consensus Mechanism}: Currently transitioning from Proof of Work (PoW) to Proof of Stake (PoS) with Ethereum 2.0.
+    \item \textbf{Transaction Speed}: Lower throughput, around 15-30 TPS.
+    \item \textbf{Transaction Costs}: Higher fees, especially during network congestion.
+    \item \textbf{Smart Contracts}: Uses Solidity for smart contract development.
+    \item \textbf{Scalability}: Working on scalability solutions like sharding and layer 2 solutions (e.g., rollups).
+\end{itemize}
+
+\section*{Summary}
+\begin{itemize}
+    \item \textbf{Solana} excels in high throughput and low fees, making it suitable for high-frequency applications.
+    \item \textbf{Ethereum} is the most established platform with a large developer community but faces scalability and high fee challenges.
+    \item \textbf{Aleph Zero} offers high throughput and low fees with a unique DAG-based consensus, focusing on privacy and security.
+    \item \textbf{Polkadot} provides interoperability and scalability through its parachain architecture, allowing multiple blockchains to connect and communicate.
+\end{itemize}
+
+Each blockchain has its strengths and is suited for different use cases depending on the requirements for speed, cost, scalability, and interoperability.
+
+This LaTeX document provides a structured comparison of the four blockchain platforms, highlighting their key features and differences.
+
+Polkadot's value dropped considerably as reservations regarding its ecosystem persisted ahead of the JAM chain update. On Monday morning, the DOT token experienced a
+dramatic decrease to 6.42USD at 6:48 a.m. GMT, representing a plunge of over 45pc from its high this year. This occurred simultaneously with a death cross on its chart,
+indicating possible additional declines as the 50-day moving average falls below the 200-day moving average.
+
+Despite the imminent release of the JAM upgrade in the next 20 to 60 months, many analysts fear a further decline in DOT's price. This is due to the easy-to-deploy
+networks like Solana and BNB being a huge market competition for Polkadot. Furthermore, as all famous chains have memecoins active, Polkadot has yet to have one of its own.
+This has further pushed users to prefer Polkadot less than BNB, Solana, and Ethereum chains.
+
+JAM, which aims to overhaul the current system, demonstrates great promise as a future replacement for the relay chain. The framework draws its name from Core JAM,
+representing Collect, Refine, Join, and Accumulate functions. This designation symbolizes the underlying process JAM would employ, as first proposed by researcher and
+Ethereum co-founder Gavin Wood.
+
+However, only the Joining and Accumulating stages would transpire on the chain, while Information Gathering and Refinement occur externally.
+
+Dissimilar to step-by-step modifications, JAM will debut as a single, vast renovation.
+
+Numerous elements influenced this strategy: A consolidated upgrade facilitates meticulous administration of post-change actions, which fragmented amendments
+struggle to oversee adequately. It also helps stabilize the constant influx of small fixes and significant disruptions that tend to emerge throughout prolonged
+periods of development.
+
+Over the years, Polkadot has attracted developers who aim to attract customers quickly through the auction pipeline. Some of those are Acala, Astar, Bittensor,
+Centrifuge, and Clover Finance. Even still, these networks have lagged behind the popularity of Ethereum, Solana, and the BNB Chain.
+
+The Gray Paper forecasts that the Joint Accumulating Machine (JAM) upgrade will introduce relatively deterministic changes to the Relay Chain, which offers a
+globally single permissionless object space and secure sideband computation parallelized over a scalable node network. Soon after its release,
+the network will make the JAM chain available for developers to develop.
+
+
+\bibliography{tokenomics}
+\bibliographystyle{plainnat}
+\end{document}
